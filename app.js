@@ -233,3 +233,34 @@ if ("serviceWorker" in navigator &&
       .catch(error => console.error("登録失敗:", error));
   });
 }
+// メモをJSONファイルとしてエクスポート
+$("exportBtn").addEventListener("click", () => {
+  // 入力中の内容を先に保存
+  flushSave();
+
+  const exportData = {
+    app: "Memo",
+    exportedAt: new Date().toISOString(),
+    memos: memos
+  };
+
+  const blob = new Blob(
+    [JSON.stringify(exportData, null, 2)],
+    { type: "application/json;charset=utf-8" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download =
+    "memo-backup-" +
+    new Date().toLocaleDateString("sv-SE") +
+    ".json";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
