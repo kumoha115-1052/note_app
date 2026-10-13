@@ -1,0 +1,13 @@
+
+{
+  "id": "./",
+  "name": "Memo - シンプルなメモ帳",
+  "short_name": "Memo",
+  "description": "端末内にメモを保存できるメモ帳",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2457d6"
+}
