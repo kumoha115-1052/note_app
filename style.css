@@ -1,0 +1,230 @@
+
+* { box-sizing: border-box; }
+
+:root {
+  font-family: system-ui, "Noto Sans JP", sans-serif;
+  color: #202534;
+  background: #f5f7fb;
+}
+
+body { margin: 0; min-height: 100vh; }
+
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+
+.app {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  max-width: 1500px;
+  min-height: 100vh;
+  margin: auto;
+  background: white;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 16px;
+  background: #f8f9fc;
+  border-right: 1px solid #e5e8ef;
+}
+
+.sidebar h2 { margin: 0 0 5px; }
+
+.primary {
+  border: 0;
+  border-radius: 9px;
+  background: #2457d6;
+  color: white;
+  padding: 12px;
+  font-weight: 600;
+}
+
+.primary:hover { background: #1947bc; }
+
+#search {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #e0e4ed;
+  border-radius: 8px;
+  outline-color: #2457d6;
+  background: white;
+}
+
+.list-title {
+  display: flex;
+  justify-content: space-between;
+  color: #858da0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+#count {
+  background: #e6ebf6;
+  padding: 1px 7px;
+  border-radius: 6px;
+}
+
+#memoList { flex: 1; }
+
+.memo {
+  width: 100%;
+  display: block;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 11px;
+  margin-bottom: 5px;
+  background: transparent;
+  color: #252b3b;
+}
+
+.memo:hover { background: #edf1f8; }
+
+.memo.active {
+  background: #eaf0ff;
+  border-color: #d7e2ff;
+}
+
+.memo strong, .memo small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.memo strong { font-size: 13px; }
+.memo small { margin-top: 5px; color: #8b93a5; font-size: 11px; }
+
+.storage-note {
+  border-top: 1px solid #e5e8ef;
+  padding-top: 15px;
+  color: #6f9a83;
+  font-size: 11px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+header {
+  height: 65px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 35px;
+  border-bottom: 1px solid #edf0f5;
+  color: #9299a9;
+  font-size: 12px;
+}
+
+.delete {
+  background: white;
+  border: 1px solid #e3e6ed;
+  border-radius: 7px;
+  padding: 8px 12px;
+  color: #bd4141;
+}
+
+.delete:disabled { opacity: .4; cursor: default; }
+
+#editor {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 55px clamp(22px, 5vw, 65px) 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  border: 0;
+  outline: 0;
+  font-size: clamp(25px, 3vw, 34px);
+  font-weight: 700;
+  width: 100%;
+  color: #202534;
+}
+
+.title::placeholder { color: #bbc1cd; }
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 0;
+  margin-top: 10px;
+  border-bottom: 1px solid #edf0f5;
+  color: #969eae;
+  font-size: 11px;
+}
+
+#content {
+  flex: 1;
+  min-height: 350px;
+  width: 100%;
+  padding: 22px 0;
+  border: 0;
+  outline: 0;
+  resize: none;
+  font-size: 14px;
+  line-height: 2;
+  color: #42495a;
+}
+
+#content::placeholder { color: #b2bac8; }
+
+footer {
+  padding-top: 14px;
+  border-top: 1px solid #edf0f5;
+  color: #9299a9;
+  font-size: 11px;
+}
+
+.empty {
+  margin: auto;
+  padding: 30px;
+  text-align: center;
+}
+
+.big-icon {
+  margin: auto auto 20px;
+  display: grid;
+  place-items: center;
+  width: 65px;
+  height: 65px;
+  border-radius: 18px;
+  background: #edf2ff;
+  color: #2457d6;
+  font-size: 32px;
+}
+
+.empty p { color: #9299a9; font-size: 13px; }
+
+#empty[hidden], #editor[hidden] { display: none; }
+
+@media (max-width: 650px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar {
+    min-height: auto;
+    padding: 14px;
+    border-right: 0;
+    border-bottom: 1px solid #e5e8ef;
+  }
+  .sidebar h2 { font-size: 19px; }
+  #memoList {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+  }
+  .memo { min-width: 145px; max-width: 190px; }
+  .storage-note { display: none; }
+  .main { min-height: 65vh; }
+  header { height: 52px; padding: 0 18px; }
+  #editor { padding: 30px 22px 18px; }
+  #content { min-height: 250px; }
+}
