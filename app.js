@@ -223,3 +223,13 @@ if (memos.length) {
 } else {
   renderEditor();
 }
+
+
+if ("serviceWorker" in navigator &&
+    (location.protocol === "https:" ||
+     location.hostname === "localhost")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .catch(error => console.error("登録失敗:", error));
+  });
+}
