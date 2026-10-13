@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2457d6">
+  <title>Memo - メモ帳</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <h2>📝 Memo</h2>
+      <button id="newBtn" class="primary">＋ 新しいメモ</button>
+      <input id="search" type="search" placeholder="メモを検索…">
+      <div class="list-title">メモ一覧 <span id="count">0</span></div>
+      <div id="memoList"></div>
+      <p class="storage-note">● この端末に自動保存</p>
+    </aside>
+
+    <main class="main">
+      <header>
+        <span id="saveStatus">Memo</span>
+        <button id="deleteBtn" class="delete" disabled>削除</button>
+      </header>
+
+      <section id="empty" class="empty">
+        <div class="big-icon">✎</div>
+        <h1>メモを残そう</h1>
+        <p>思いついたことを、自由に書き留められます。</p>
+        <button id="emptyNewBtn" class="primary">＋ メモを作成</button>
+      </section>
+
+      <section id="editor" hidden>
+        <input id="title" class="title" placeholder="無題のメモ" maxlength="160">
+        <div class="meta">
+          <span id="updated">新しいメモ</span>
+          <span id="length">0文字</span>
+        </div>
+        <textarea id="content" placeholder="ここにメモを入力…"></textarea>
+        <footer>自動保存対応 · <span id="footerStatus">端末内に保存</span></footer>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
