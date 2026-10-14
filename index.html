@@ -27,7 +27,11 @@
     <main class="main">
       <header>
         <span id="saveStatus">Memo</span>
-        <button id="deleteBtn" class="delete" disabled>削除</button>
+        <div class="header-actions">
+          <button id="pinBtn" class="toggle-action" type="button" disabled aria-pressed="false" title="メモをピン留め">📌 ピン留め</button>
+          <button id="favoriteBtn" class="toggle-action" type="button" disabled aria-pressed="false" title="お気に入りに追加">☆ お気に入り</button>
+          <button id="deleteBtn" class="delete" disabled>削除</button>
+        </div>
       </header>
 
       <section id="empty" class="empty">

@@ -95,13 +95,43 @@ function updateDate() {
     });
 }
 
+function sortMemos(items) {
+  return [...items].sort((a, b) => {
+    // ピン留めを最上部にし、同じ状態の中では更新日時順にする
+    const pinDifference = Number(Boolean(b.pinned)) - Number(Boolean(a.pinned));
+    return pinDifference || (Number(b.updated) || 0) - (Number(a.updated) || 0);
+  });
+}
+
+function updateToggleButtons() {
+  const memo = currentMemo();
+  const hasMemo = Boolean(memo);
+
+  $("pinBtn").disabled = !hasMemo;
+  $("favoriteBtn").disabled = !hasMemo;
+  $("pinBtn").setAttribute("aria-pressed", String(Boolean(memo && memo.pinned)));
+  $("favoriteBtn").setAttribute("aria-pressed", String(Boolean(memo && memo.favorite)));
+  $("pinBtn").textContent = memo && memo.pinned ? "📌 ピン留め中" : "📌 ピン留め";
+  $("favoriteBtn").textContent = memo && memo.favorite ? "★ お気に入り" : "☆ お気に入り";
+}
+
+function toggleMemoFlag(flag) {
+  flushSave();
+  const memo = currentMemo();
+  if (!memo) return;
+
+  memo[flag] = !Boolean(memo[flag]);
+  saveData();
+  renderList();
+  updateToggleButtons();
+}
+
 function renderList() {
   const query = $("search").value.trim().toLowerCase();
   const list = $("memoList");
   list.replaceChildren();
 
-  const sorted = [...memos]
-    .sort((a, b) => b.updated - a.updated)
+  const sorted = sortMemos(memos)
     .filter(m =>
       ((m.title || "") + " " + (m.content || ""))
         .toLowerCase().includes(query)
@@ -127,7 +157,10 @@ function renderList() {
     button.type = "button";
 
     const title = document.createElement("strong");
-    title.textContent = memo.title.trim() || "無題のメモ";
+    const flags = document.createElement("span");
+    flags.className = "memo-flags";
+    flags.textContent = (memo.pinned ? "📌 " : "") + (memo.favorite ? "★ " : "");
+    title.append(flags, document.createTextNode(memo.title.trim() || "無題のメモ"));
 
     const preview = document.createElement("small");
     preview.textContent =
@@ -149,6 +182,7 @@ function renderEditor() {
   $("empty").hidden = hasMemo;
   $("editor").hidden = !hasMemo;
   $("deleteBtn").disabled = !hasMemo;
+  updateToggleButtons();
 
   if (!memo) return;
 
@@ -174,7 +208,9 @@ function createMemo() {
     title: "",
     content: "",
     created: now,
-    updated: now
+    updated: now,
+    pinned: false,
+    favorite: false
   };
 
   memos.push(memo);
@@ -206,6 +242,8 @@ function deleteMemo() {
 $("newBtn").addEventListener("click", createMemo);
 $("emptyNewBtn").addEventListener("click", createMemo);
 $("deleteBtn").addEventListener("click", deleteMemo);
+$("pinBtn").addEventListener("click", () => toggleMemoFlag("pinned"));
+$("favoriteBtn").addEventListener("click", () => toggleMemoFlag("favorite"));
 $("search").addEventListener("input", renderList);
 $("title").addEventListener("input", queueSave);
 $("content").addEventListener("input", queueSave);
@@ -218,8 +256,8 @@ document.addEventListener("visibilitychange", () => {
 renderList();
 
 if (memos.length) {
-  memos.sort((a, b) => b.updated - a.updated);
-  selectMemo(memos[0].id);
+  const firstMemo = sortMemos(memos)[0];
+  selectMemo(firstMemo.id);
 } else {
   renderEditor();
 }
@@ -328,7 +366,10 @@ $("importFile").addEventListener("change", async event => {
         title: item.title,
         content: item.content,
         created: Number(item.created) || now,
-        updated: Number(item.updated) || now
+        updated: Number(item.updated) || now,
+        // 旧形式のバックアップでは未定義なので false を初期値にする
+        pinned: Boolean(item.pinned),
+        favorite: Boolean(item.favorite)
       });
 
       if (item.id) existingIds.add(item.id);
@@ -339,8 +380,7 @@ $("importFile").addEventListener("change", async event => {
     renderList();
 
     if (memos.length) {
-      memos.sort((a, b) => b.updated - a.updated);
-      selectMemo(memos[0].id);
+      selectMemo(sortMemos(memos)[0].id);
     }
 
     alert(

@@ -68,6 +68,35 @@ button { cursor: pointer; }
 
 #memoList { flex: 1; }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-action {
+  background: white;
+  border: 1px solid #e3e6ed;
+  border-radius: 7px;
+  padding: 8px 10px;
+  color: #596276;
+  white-space: nowrap;
+}
+
+.toggle-action[aria-pressed="true"] {
+  color: #1947bc;
+  background: #eaf0ff;
+  border-color: #cbd9ff;
+}
+
+.toggle-action:disabled { opacity: .4; cursor: default; }
+
+.memo-flags {
+  display: inline-block;
+  margin-right: 4px;
+  font-size: 11px;
+}
+
 .memo {
   width: 100%;
   display: block;
@@ -224,7 +253,9 @@ footer {
   .memo { min-width: 145px; max-width: 190px; }
   .storage-note { display: none; }
   .main { min-height: 65vh; }
-  header { height: 52px; padding: 0 18px; }
+  header { height: auto; min-height: 52px; padding: 10px 14px; gap: 8px; }
+  .header-actions { gap: 5px; }
+  .toggle-action, .delete { padding: 7px 8px; font-size: 11px; }
   #editor { padding: 30px 22px 18px; }
   #content { min-height: 250px; }
 }
